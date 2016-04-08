@@ -12,6 +12,7 @@ public class Detonate : MonoBehaviour {
     {
         yield return new WaitForSeconds(2f);
         Destroy(GameObject.FindWithTag("wybuch"));
+
     }
 	// Update is called once per frame
 	void Update () {
@@ -26,8 +27,8 @@ public class Detonate : MonoBehaviour {
                 float y = GameObject.FindWithTag("bomba").transform.position.y;
                 Destroy(GameObject.FindWithTag("bomba"));
                 Instantiate(BombWybuch,(new Vector3(x, y, 0)), Quaternion.identity);
-                StartCoroutine("WaitToDestroy");
-          
+                //StartCoroutine("WaitToDestroy");
+                //Destroy(GameObject.FindWithTag("wybuch"), 2.5f);
 
             }
 

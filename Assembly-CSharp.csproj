@@ -46,8 +46,15 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\MainMenu\Scripts\MainMenu.cs" />
+     <Compile Include="Assets\Scripts\BombHealth.cs" />
+     <Compile Include="Assets\Scripts\DestroyExplosion.cs" />
      <Compile Include="Assets\Scripts\Detonate.cs" />
+     <Compile Include="Assets\Scripts\Oncollision.cs" />
+     <Compile Include="Assets\Scripts\Options.cs" />
      <Compile Include="Assets\Scripts\PlaceBomb.cs" />
+     <Compile Include="Assets\Scripts\PlayerHealth.cs" />
+     <Compile Include="Assets\Scripts\Spawn.cs" />
+     <Compile Include="Assets\Scripts\Zombie_Move.cs" />
      <Compile Include="Assets\Scripts\tymczasowo.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Users/Jasiu/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
