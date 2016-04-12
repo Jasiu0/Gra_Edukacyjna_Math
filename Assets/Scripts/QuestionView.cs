@@ -14,13 +14,13 @@ public class QuestionView : MonoBehaviour {
     private GameObject background;
 
     void Start() {
-        questionRect = new Rect(0, 0.75f * Screen.height,
+        questionRect = new Rect(0, Screen.height - 100f,
             Screen.width, 50);
-        answer1Rect = new Rect(0, 0.75f * Screen.height + 50,
+        answer1Rect = new Rect(0, Screen.height - 50f,
             Screen.width / 3, 50);
-        answer2Rect = new Rect(Screen.width / 3, 0.75f * Screen.height + 50,
+        answer2Rect = new Rect(Screen.width / 3, Screen.height - 50,
             Screen.width / 3, 50);
-        answer3Rect = new Rect(2 * Screen.width / 3, 0.75f * Screen.height + 50,
+        answer3Rect = new Rect(2 * Screen.width / 3, Screen.height - 50,
             Screen.width / 3, 50);
 
 
@@ -31,7 +31,7 @@ public class QuestionView : MonoBehaviour {
     }
 
     void OnGUI() {
-        GUI.Label(questionRect, currentQuestion.Question);
+        GUI.Box(questionRect, currentQuestion.Question);
 
         if (GUI.Button(answer1Rect, currentQuestion.Answer1)) {
             verifyAnswer(currentQuestion.Answer1);
