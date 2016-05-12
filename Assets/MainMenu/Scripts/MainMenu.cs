@@ -11,6 +11,7 @@ public class MainMenu : MonoBehaviour {
         // Display buttons
         if (GUI.Button(new Rect(Screen.width * 0.25f , Screen.height * 0.3f, Screen.width * 0.5f, Screen.height * .1f), "New Game"))
         {
+            PlayerHealth.Health = 5;
             Application.LoadLevel("Mapa");
         }
 

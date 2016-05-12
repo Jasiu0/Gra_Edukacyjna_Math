@@ -32,21 +32,25 @@ public class QuestionView : MonoBehaviour {
    
     void OnGUI() {
 
+        if (Options.Option == 0)
+        {
+            GUI.Box(questionRect, currentQuestion.Question);
 
-        GUI.Box(questionRect, currentQuestion.Question);
+            if (GUI.Button(answer1Rect, currentQuestion.Answer1))
+            {
+                verifyAnswer(currentQuestion.Answer1);
+            }
 
-        if (GUI.Button(answer1Rect, currentQuestion.Answer1)) {
-            verifyAnswer(currentQuestion.Answer1);
+            if (GUI.Button(answer2Rect, currentQuestion.Answer2))
+            {
+                verifyAnswer(currentQuestion.Answer2);
+            }
+
+            if (GUI.Button(answer3Rect, currentQuestion.Answer3))
+            {
+                verifyAnswer(currentQuestion.Answer3);
+            }
         }
-
-        if (GUI.Button(answer2Rect, currentQuestion.Answer2)) {
-            verifyAnswer(currentQuestion.Answer2);
-        }
-
-        if (GUI.Button(answer3Rect, currentQuestion.Answer3)) {
-            verifyAnswer(currentQuestion.Answer3);
-        }
-
     }   
 
     public void ShowQuestion() {

@@ -60,6 +60,7 @@ public class PlayerHealth : MonoBehaviour {
                 DestroyAllObjects("zombie");
                 DestroyAllObjects("wybuch");
                 DestroyAllObjects("bomba");
+                PlayerHealth.Health = 5;
                 Application.LoadLevel("MainMenu"); 
             }
             if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.55f, Screen.width * 0.5f, Screen.height * .1f), "Quit Game"))
