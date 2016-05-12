@@ -12,10 +12,10 @@ public class QuestionView : MonoBehaviour {
     private QuestionModel currentQuestion;
 
     private GameObject background;
-
     void Start() {
-        questionRect = new Rect(0, Screen.height - 100f,
-            Screen.width, 50);
+
+        questionRect = new Rect(0, Screen.height - 90f,
+            Screen.width * 0.85f, 40);
         answer1Rect = new Rect(0, Screen.height - 50f,
             Screen.width / 3, 50);
         answer2Rect = new Rect(Screen.width / 3, Screen.height - 50,
@@ -29,8 +29,10 @@ public class QuestionView : MonoBehaviour {
 
         background = GameObject.FindWithTag("floorBackground");
     }
-
+   
     void OnGUI() {
+
+
         GUI.Box(questionRect, currentQuestion.Question);
 
         if (GUI.Button(answer1Rect, currentQuestion.Answer1)) {
