@@ -10,6 +10,22 @@ public class DbHelper {
 
     public DbHelper() {
         this.dbUri = "URI=file:" + Application.dataPath + "/Database/QuestionDb.sqlite";
+        //CreateDatabase();
+    }     
+
+    public void CreateDatabase() {
+        using (IDbConnection dbConnection = new SqliteConnection(dbUri)) {
+            dbConnection.Open();
+
+            using (IDbCommand dbCommand = dbConnection.CreateCommand()) {
+                ClearDb(dbCommand);
+
+                CreateAdditionLevelDb(dbCommand, 50);
+                CreateMultiplicationLevelDb(dbCommand, 50);
+                CreateDivisionLevelDb(dbCommand, 50);
+            }
+            dbConnection.Close();
+        }
     }
 
     public List<QuestionModel> GetQuestionsFromLevel(int level) {
@@ -43,5 +59,155 @@ public class DbHelper {
             }
         }
         return questionList;
+    }
+
+    private void ClearDb(IDbCommand dbCommand) {
+        string sqlQuery = "DELETE FROM Data";
+        dbCommand.CommandText = sqlQuery;
+        dbCommand.ExecuteScalar();
+
+        sqlQuery = "DELETE FROM SQLITE_SEQUENCE WHERE name == \'Data\'";
+        dbCommand.CommandText = sqlQuery;
+        dbCommand.ExecuteScalar();
+    }
+
+    private void CreateAdditionLevelDb(IDbCommand dbCommand, int maxResult) {
+        string level = "", question = "", goodAnswer = "";
+        string[] answers = { "", "", "" };
+        int goodAnswerIndex;
+        List<int> offsets = new List<int>();
+
+        System.Random random = new System.Random();
+
+        level = "1";
+        for (int i = 0; i <= maxResult; i++) {
+            for (int j = 0; j <= maxResult - i; j++) {
+                question = i + " + " + j;
+                goodAnswer = (i + j) + "";
+
+                goodAnswerIndex = random.Next(3);
+                answers[goodAnswerIndex] = goodAnswer;
+
+                offsets.Add(0);
+                offsets.Add(0);
+
+                do {
+                    offsets[0] = random.Next(11) - 5;
+                } while (offsets[0] == 0 || i + j + offsets[0] < 0);
+
+                do {
+                    offsets[1] = random.Next(11) - 5;
+                } while (offsets[0] == offsets[1] || offsets[1] == 0 || i + j + offsets[1] < 0);
+
+                for (int k = 0; k < 3; k++) {
+                    if (k != goodAnswerIndex) {
+                        answers[k] = (i + j + offsets[0]) + "";
+                        offsets.RemoveAt(0);
+                    }
+                }
+
+                string sqlQuery = String.Format("INSERT INTO Data(lvl, question, answer1, answer2, answer3, goodanswer) " +
+                    "VALUES(\"{0}\", \"{1}\", \"{2}\", \"{3}\", \"{4}\", \"{5}\")",
+                    level, question, answers[0], answers[1], answers[2], goodAnswer);
+                dbCommand.CommandText = sqlQuery;
+                dbCommand.ExecuteScalar();
+            }
+        }
+    }
+
+    private void CreateMultiplicationLevelDb(IDbCommand dbCommand, int maxResult) {
+        string level = "", question = "", goodAnswer = "";
+        string[] answers = { "", "", "" };
+        int goodAnswerIndex;
+        List<int> offsets = new List<int>();
+
+        System.Random random = new System.Random();
+
+        level = "2";
+        int i = 0;
+        while (i <= maxResult) {
+            int j = 0;
+            do {
+                question = i + " * " + j;
+                goodAnswer = (i * j) + "";
+
+                goodAnswerIndex = random.Next(3);
+                answers[goodAnswerIndex] = goodAnswer;
+
+                offsets.Add(0);
+                offsets.Add(0);
+
+                do {
+                    offsets[0] = random.Next(11) - 5;
+                } while (offsets[0] == 0 || i * j + offsets[0] < 0);
+
+                do {
+                    offsets[1] = random.Next(11) - 5;
+                } while (offsets[0] == offsets[1] || offsets[1] == 0 || i * j + offsets[1] < 0);
+
+                for (int k = 0; k < 3; k++) {
+                    if (k != goodAnswerIndex) {
+                        answers[k] = (i * j + offsets[0]) + "";
+                        offsets.RemoveAt(0);
+                    }
+                }
+
+                string sqlQuery = String.Format("INSERT INTO Data(lvl, question, answer1, answer2, answer3, goodanswer) " +
+                    "VALUES(\"{0}\", \"{1}\", \"{2}\", \"{3}\", \"{4}\", \"{5}\")",
+                    level, question, answers[0], answers[1], answers[2], goodAnswer);
+                dbCommand.CommandText = sqlQuery;
+                dbCommand.ExecuteScalar();
+
+                j++;
+            } while (i * j <= maxResult && i != 0);
+            i++;
+        }
+    }
+
+    private void CreateDivisionLevelDb(IDbCommand dbCommand, int maxResult) {
+        string level = "", question = "", goodAnswer = "";
+        string[] answers = { "", "", "" };
+        int goodAnswerIndex;
+        List<int> offsets = new List<int>();
+
+        System.Random random = new System.Random();
+
+        level = "3";
+        for (int i = 1; i <= maxResult; i++){
+            for (int j = maxResult; j > 0; j--) {
+                if ((i % j) != 0) {
+                    continue;
+                }
+                question = i + " / " + j;
+                goodAnswer = (i / j) + "";
+
+                goodAnswerIndex = random.Next(3);
+                answers[goodAnswerIndex] = goodAnswer;
+
+                offsets.Add(0);
+                offsets.Add(0);
+
+                do {
+                    offsets[0] = random.Next(11) - 5;
+                } while (offsets[0] == 0 || i / j + offsets[0] < 0);
+
+                do {
+                    offsets[1] = random.Next(11) - 5;
+                } while (offsets[0] == offsets[1] || offsets[1] == 0 || i / j + offsets[1] < 0);
+
+                for (int k = 0; k < 3; k++) {
+                    if (k != goodAnswerIndex) {
+                        answers[k] = (i / j + offsets[0]) + "";
+                        offsets.RemoveAt(0);
+                    }
+                }
+
+                string sqlQuery = String.Format("INSERT INTO Data(lvl, question, answer1, answer2, answer3, goodanswer) " +
+                    "VALUES(\"{0}\", \"{1}\", \"{2}\", \"{3}\", \"{4}\", \"{5}\")",
+                    level, question, answers[0], answers[1], answers[2], goodAnswer);
+                dbCommand.CommandText = sqlQuery;
+                dbCommand.ExecuteScalar();
+            }
+        }
     }
 }
