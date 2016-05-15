@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -7,6 +8,8 @@ public class QuestionManager {
     private List<QuestionModel> questions;
 
     private DbHelper dbHelper;
+
+    private int currentQuestionIndex;
 
     public QuestionManager() {
         dbHelper = new DbHelper();
@@ -27,12 +30,14 @@ public class QuestionManager {
             LoadQuestions();
         }
 
-        return questions[0];
+        System.Random random = new System.Random();
+        currentQuestionIndex = random.Next(questions.Count);
+        return questions[currentQuestionIndex];
     }
 
     public bool IsCorrect(string chosenAnswer) {
-        bool result = chosenAnswer.Equals(questions[0].GoodAnswer);
-        questions.RemoveAt(0);
+        bool result = chosenAnswer.Equals(questions[currentQuestionIndex].GoodAnswer);
+        questions.RemoveAt(currentQuestionIndex);
 
         return result;
     }
@@ -43,11 +48,5 @@ public class QuestionManager {
         if (questions.Count == 0) {
             throw new NoQuestionsException();
         }
-        ShuffleQuestionList();
     }
-
-    private void ShuffleQuestionList() {
-        //TODO implement shuffling
-    }
-
 }
