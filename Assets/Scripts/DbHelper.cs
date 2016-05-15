@@ -1,20 +1,20 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using Mono.Data.Sqlite;
 using System;
 
 public class DbHelper {
-    private string dbUri;
+    private string questionDbUri;
+    private string scoreDbUri;
 
     public DbHelper() {
-        this.dbUri = "URI=file:" + Application.dataPath + "/Database/QuestionDb.sqlite";
-        //CreateDatabase();
+        this.questionDbUri = "URI=file:" + Application.dataPath + "/Database/QuestionDb.sqlite";
+        this.scoreDbUri = "URI=file:" + Application.dataPath + "/Database/ScoreDb.sqlite";        
     }     
 
-    public void CreateDatabase() {
-        using (IDbConnection dbConnection = new SqliteConnection(dbUri)) {
+    public void CreateQuestionDatabase() {
+        using (IDbConnection dbConnection = new SqliteConnection(questionDbUri)) {
             dbConnection.Open();
 
             using (IDbCommand dbCommand = dbConnection.CreateCommand()) {
@@ -31,7 +31,7 @@ public class DbHelper {
     public List<QuestionModel> GetQuestionsFromLevel(int level) {
         List<QuestionModel> questionList = new List<QuestionModel>();
 
-        using (IDbConnection dbConnection = new SqliteConnection(dbUri)) {
+        using (IDbConnection dbConnection = new SqliteConnection(questionDbUri)) {
             dbConnection.Open();
 
             using (IDbCommand dbCommand = dbConnection.CreateCommand()) {
@@ -60,6 +60,59 @@ public class DbHelper {
         }
         return questionList;
     }
+
+    public void ClearScoreDatabase() {
+        using (IDbConnection dbConnection = new SqliteConnection(scoreDbUri)) {
+            dbConnection.Open();
+
+            using (IDbCommand dbCommand = dbConnection.CreateCommand()) {
+                ClearDb(dbCommand);
+            }
+            dbConnection.Close();
+        }
+    }
+
+    public void AddScoreRecord(string name, int score) {
+        using (IDbConnection dbConnection = new SqliteConnection(scoreDbUri)) {
+            dbConnection.Open();
+
+            using (IDbCommand dbCommand = dbConnection.CreateCommand()) {
+                string sqlQuery = String.Format("INSERT INTO Data(name, score) VALUES(\"{0}\", \"{1}\")", name, score);
+                dbCommand.CommandText = sqlQuery;
+                Debug.Log("Writing new score...");
+                dbCommand.ExecuteScalar();
+            }
+            Debug.Log("New score written!");
+            dbConnection.Close();
+        }
+    }
+
+    public List<ScoreModel> GetScores() {
+        List<ScoreModel> scoreList = new List<ScoreModel>();
+
+        using (IDbConnection dbConnection = new SqliteConnection(scoreDbUri)) {
+            dbConnection.Open();
+
+            using (IDbCommand dbCommand = dbConnection.CreateCommand()) {
+                string sqlQuery = "SELECT * FROM Data";
+                dbCommand.CommandText = sqlQuery;
+
+                using (IDataReader dataReader = dbCommand.ExecuteReader()) {
+                    while (dataReader.Read()) {
+                        ScoreModel score = new ScoreModel();
+
+                        score.Id = dataReader.GetInt32(0);
+                        score.Name = dataReader.GetString(1);
+                        score.Score = dataReader.GetInt32(2);
+
+                        scoreList.Add(score);
+                    }
+                }
+            }
+        }
+        return scoreList;
+    }
+
 
     private void ClearDb(IDbCommand dbCommand) {
         string sqlQuery = "DELETE FROM Data";
