@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Oncollision : MonoBehaviour {
     // Use this for initialization
+    public static int score = 0;
 	void Start () {
 	
 	}
@@ -18,6 +19,7 @@ public class Oncollision : MonoBehaviour {
         {
             Destroy(coll.gameObject);
             PlayerHealth.Health += 1;
+            score += MainMenu.lv; 
         }
 
     }

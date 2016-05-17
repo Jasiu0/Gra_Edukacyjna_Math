@@ -7,7 +7,7 @@ public class PlaceBomb : MonoBehaviour {
 
     private GameObject questionView;
 
-    private bool bombPlaced;
+    private bool bombPlaced=true;
 	// Use this for initialization
 	void Start () {
         questionView = GameObject.FindWithTag("questionView");
@@ -27,9 +27,13 @@ public class PlaceBomb : MonoBehaviour {
 
             questionView.SendMessage("ShowQuestion", null);
         } else {
-            Destroy(GameObject.FindWithTag("bomba"));
-            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
-            Instantiate(Bomb, ray.origin, Quaternion.identity);
+            if (Options.Option == 0 && PlayerHealth.Health > 0)
+            {
+                Destroy(GameObject.FindWithTag("bomba"));
+                Ray ray = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
+                Instantiate(Bomb, ray.origin, Quaternion.identity);
+
+            }
         }
     }
 
