@@ -9,8 +9,16 @@ public class DbHelper {
     private string scoreDbUri;
 
     public DbHelper() {
+        //Uncomment following 2 lines when debugging on PC
         this.questionDbUri = "URI=file:" + Application.dataPath + "/Database/QuestionDb.sqlite";
-        this.scoreDbUri = "URI=file:" + Application.dataPath + "/Database/ScoreDb.sqlite";        
+        this.scoreDbUri = "URI=file:" + Application.dataPath + "/Database/ScoreDb.sqlite";
+
+        //Uncomment following 2 lines when debugging on Android Device
+        //this.questionDbUri = "URI=file:" + Application.persistentDataPath + "/QuestionDb.sqlite";
+        //this.scoreDbUri = "URI=file:" + Application.persistentDataPath + "/ScoreDb.sqlite";
+
+        //Uncomment when building first time
+        //CreateQuestionDatabase();  
     }     
 
     public void CreateQuestionDatabase() {
@@ -18,7 +26,7 @@ public class DbHelper {
             dbConnection.Open();
 
             using (IDbCommand dbCommand = dbConnection.CreateCommand()) {
-                ClearDb(dbCommand);
+                CreateQuestionDataTable(dbCommand);
 
                 CreateAdditionLevelDb(dbCommand, 50);
                 CreateMultiplicationLevelDb(dbCommand, 50);
@@ -124,6 +132,19 @@ public class DbHelper {
         dbCommand.ExecuteScalar();
     }
 
+    private void CreateQuestionDataTable(IDbCommand dbCommand) {
+        string sqlQuery = "CREATE TABLE 'Data' (" +
+                          "'id'	INTEGER PRIMARY KEY AUTOINCREMENT," +
+	                      "'lvl'	INTEGER NOT NULL," +
+	                      "'question'	TEXT NOT NULL," +
+	                      "'answer1'	TEXT NOT NULL," +
+	                      "'answer2'	TEXT NOT NULL," +
+	                      "'answer3'	TEXT NOT NULL," +
+	                      "'goodanswer'	TEXT NOT NULL); ";
+        dbCommand.CommandText = sqlQuery;
+        dbCommand.ExecuteScalar();
+    }
+    
     private void CreateAdditionLevelDb(IDbCommand dbCommand, int maxResult) {
         string level = "", question = "", goodAnswer = "";
         string[] answers = { "", "", "" };
