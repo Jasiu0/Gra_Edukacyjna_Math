@@ -4,9 +4,9 @@ using System.Collections;
 public class PlaceBomb : MonoBehaviour {
     public GameObject Bomb;
     public GameObject BombExplosion;
-
+    public AudioClip placesound;
     private GameObject questionView;
-
+    public AudioClip explosion;
     private bool bombPlaced=true;
 	// Use this for initialization
 	void Start () {
@@ -20,6 +20,9 @@ public class PlaceBomb : MonoBehaviour {
 	}
  
     void OnMouseDown() {
+        this.gameObject.AddComponent<AudioSource>();
+        this.GetComponent<AudioSource>().clip = placesound;
+        this.GetComponent<AudioSource>().Play();
         if (!bombPlaced) {
             bombPlaced = true;
             Ray ray = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
@@ -44,6 +47,9 @@ public class PlaceBomb : MonoBehaviour {
 
         if (doExplode) {
             Instantiate(BombExplosion, (new Vector3(x, y, 0)), Quaternion.identity);
+            this.gameObject.AddComponent<AudioSource>();
+            this.GetComponent<AudioSource>().clip = explosion;
+            this.GetComponent<AudioSource>().Play();
         }
 
         bombPlaced = false;

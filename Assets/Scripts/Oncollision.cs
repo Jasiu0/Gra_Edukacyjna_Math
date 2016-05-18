@@ -19,7 +19,8 @@ public class Oncollision : MonoBehaviour {
         {
             Destroy(coll.gameObject);
             PlayerHealth.Health += 1;
-            score += MainMenu.lv; 
+            score += MainMenu.lv;
+
         }
 
     }
