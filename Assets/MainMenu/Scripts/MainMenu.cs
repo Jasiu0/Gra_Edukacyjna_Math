@@ -11,6 +11,11 @@ public class MainMenu : MonoBehaviour {
     { 
         // Display background texture
         GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height),bacgroundTexture);
+        if (pmenu != 0) {
+            if (GUI.Button(new Rect(0, 0, Screen.width * 0.15f, Screen.height * 0.08f), "Back")) {
+                pmenu = 0;
+            }
+        }
 
         if (pmenu == 0) {
             // Display buttons
@@ -88,10 +93,6 @@ public class MainMenu : MonoBehaviour {
         } else if (pmenu == 2) {
             GUI.Label(new Rect(Screen.width * 0.25f, Screen.height * 0.1f, Screen.width * 0.25f, Screen.height * 0.125f), "Player name: ");
             username = GUI.TextField(new Rect(Screen.width * 0.5f, Screen.height * 0.1f, Screen.width * 0.25f, Screen.height * 0.125f), username);
-
-            if (GUI.Button(new Rect(0, 0, Screen.width * 0.15f, Screen.height * 0.08f), "Back")) {
-                pmenu = 0;
-            }
         } else if (pmenu == 3) {
             int scoresToShow = 10;
             DbHelper dbHelper = new DbHelper();
@@ -106,10 +107,6 @@ public class MainMenu : MonoBehaviour {
             for (int i = 0; i < scoresToShow; i++) {
                 GUI.Box(new Rect(Screen.width * 0.25f, Screen.height * (i + 1) * 0.09f, Screen.width * 0.25f, Screen.height * 0.09f), scores[i].Name);
                 GUI.Box(new Rect(Screen.width * 0.5f, Screen.height * (i + 1) * 0.09f, Screen.width * 0.25f, Screen.height * 0.09f), scores[i].Score.ToString());
-            }
-
-            if (GUI.Button(new Rect(0, 0, Screen.width * 0.15f, Screen.height * 0.08f), "Back")) {
-                pmenu = 0;
             }
         }
     }

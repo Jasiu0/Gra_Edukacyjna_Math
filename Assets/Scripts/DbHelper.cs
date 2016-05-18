@@ -49,10 +49,15 @@ public class DbHelper {
 
         using (IDbConnection dbConnection = new SqliteConnection(questionDbUri)) {
             dbConnection.Open();
-
+            int count = -1;
             using (IDbCommand dbCommand = dbConnection.CreateCommand()) {
                 for (int levelToRead = level; levelToRead > 0; levelToRead--) {
-                    LoadQuestionsFromLevel(dbCommand, levelToRead, questionList, levelToRead == level);
+                    LoadQuestionsFromLevel(dbCommand, levelToRead, questionList, count);
+                    if (count == -1) {
+                        count = 50;
+                    } else {
+                        count /= 2;
+                    }
                 }
                 dbConnection.Close();
             }
@@ -118,17 +123,18 @@ public class DbHelper {
     }
 
 
-    private void LoadQuestionsFromLevel(IDbCommand dbCommand, int level, List<QuestionModel> questionList, bool mainLevel) {
+    private void LoadQuestionsFromLevel(IDbCommand dbCommand, int level, List<QuestionModel> questionList, int count) {
         string sqlQuery = String.Format("SELECT * FROM Data WHERE lvl == \"{0}\"", level);
 
         dbCommand.CommandText = sqlQuery;
 
         using (IDataReader dataReader = dbCommand.ExecuteReader()) {
             System.Random random = new System.Random();
+            int rowCounter = 0;
             while (dataReader.Read()) {
-                if (!mainLevel) {
+                if (count != -1) {
                     double decision = random.Next(LEVEL_QUESTION_COUNTS[level - 1]);
-                    if (decision > 40) {
+                    if (decision > count) {
                         continue;
                     }
                 }
@@ -143,7 +149,9 @@ public class DbHelper {
                 question.GoodAnswer = dataReader.GetString(6);
 
                 questionList.Add(question);
+                rowCounter++;
             }
+            Debug.Log("Added " + rowCounter + " new questions from level " + level);
             dataReader.Close();
         }
     }
