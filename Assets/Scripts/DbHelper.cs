@@ -5,6 +5,8 @@ using Mono.Data.Sqlite;
 using System;
 
 public class DbHelper {
+    private int[] LEVEL_QUESTION_COUNTS = new int[8]{ 351, 351, 113, 88, 351, 351, 123, 119 }; 
+
     private string questionDbUri;
     private string scoreDbUri;
 
@@ -26,11 +28,17 @@ public class DbHelper {
             dbConnection.Open();
 
             using (IDbCommand dbCommand = dbConnection.CreateCommand()) {
-                CreateQuestionDataTable(dbCommand);
+                //CreateQuestionDataTable(dbCommand);
+                ClearDb(dbCommand);
 
-                CreateAdditionLevelDb(dbCommand, 50);
-                CreateMultiplicationLevelDb(dbCommand, 50);
-                CreateDivisionLevelDb(dbCommand, 50);
+                CreateAdditionQuestions(dbCommand, 0, 25);
+                CreateSubtractionQuestions(dbCommand, 0, 25);
+                CreateMultiplicationLevelDb(dbCommand, 0, 25);
+                CreateDivisionLevelDb(dbCommand, 0,25);
+                CreateAdditionQuestions(dbCommand, 25, 50);
+                CreateSubtractionQuestions(dbCommand, 25, 50);
+                CreateMultiplicationLevelDb(dbCommand, 25, 50);
+                CreateDivisionLevelDb(dbCommand, 25, 50);
             }
             dbConnection.Close();
         }
@@ -43,27 +51,10 @@ public class DbHelper {
             dbConnection.Open();
 
             using (IDbCommand dbCommand = dbConnection.CreateCommand()) {
-                string sqlQuery = String.Format("SELECT * FROM Data WHERE lvl == \"{0}\"", level);
-
-                dbCommand.CommandText = sqlQuery;
-
-                using (IDataReader dataReader = dbCommand.ExecuteReader()) {
-                    while (dataReader.Read()) {
-                        QuestionModel question = new QuestionModel();
-
-                        question.Id = dataReader.GetInt32(0);
-                        question.Level = dataReader.GetInt32(1);
-                        question.Question = dataReader.GetString(2);
-                        question.Answer1 = dataReader.GetString(3);
-                        question.Answer2 = dataReader.GetString(4);
-                        question.Answer3 = dataReader.GetString(5);
-                        question.GoodAnswer = dataReader.GetString(6);
-
-                        questionList.Add(question);
-                    }
-                    dbConnection.Close();
-                    dataReader.Close();
+                for (int levelToRead = level; levelToRead > 0; levelToRead--) {
+                    LoadQuestionsFromLevel(dbCommand, levelToRead, questionList, levelToRead == level);
                 }
+                dbConnection.Close();
             }
         }
         return questionList;
@@ -122,6 +113,36 @@ public class DbHelper {
     }
 
 
+    private void LoadQuestionsFromLevel(IDbCommand dbCommand, int level, List<QuestionModel> questionList, bool mainLevel) {
+        string sqlQuery = String.Format("SELECT * FROM Data WHERE lvl == \"{0}\"", level);
+
+        dbCommand.CommandText = sqlQuery;
+
+        using (IDataReader dataReader = dbCommand.ExecuteReader()) {
+            System.Random random = new System.Random();
+            while (dataReader.Read()) {
+                if (!mainLevel) {
+                    double decision = random.Next(LEVEL_QUESTION_COUNTS[level - 1]);
+                    if (decision > 40) {
+                        continue;
+                    }
+                }
+                QuestionModel question = new QuestionModel();
+
+                question.Id = dataReader.GetInt32(0);
+                question.Level = dataReader.GetInt32(1);
+                question.Question = dataReader.GetString(2);
+                question.Answer1 = dataReader.GetString(3);
+                question.Answer2 = dataReader.GetString(4);
+                question.Answer3 = dataReader.GetString(5);
+                question.GoodAnswer = dataReader.GetString(6);
+
+                questionList.Add(question);
+            }
+            dataReader.Close();
+        }
+    }
+    
     private void ClearDb(IDbCommand dbCommand) {
         string sqlQuery = "DELETE FROM Data";
         dbCommand.CommandText = sqlQuery;
@@ -145,7 +166,7 @@ public class DbHelper {
         dbCommand.ExecuteScalar();
     }
     
-    private void CreateAdditionLevelDb(IDbCommand dbCommand, int maxResult) {
+    private void CreateAdditionQuestions(IDbCommand dbCommand, int minResult, int maxResult) {
         string level = "", question = "", goodAnswer = "";
         string[] answers = { "", "", "" };
         int goodAnswerIndex;
@@ -153,8 +174,8 @@ public class DbHelper {
 
         System.Random random = new System.Random();
 
-        level = "1";
-        for (int i = 0; i <= maxResult; i++) {
+        level = minResult == 0 ? "1" : "5";
+        for (int i = minResult; i <= maxResult; i++) { 
             for (int j = 0; j <= maxResult - i; j++) {
                 question = i + " + " + j;
                 goodAnswer = (i + j) + "";
@@ -189,7 +210,7 @@ public class DbHelper {
         }
     }
 
-    private void CreateMultiplicationLevelDb(IDbCommand dbCommand, int maxResult) {
+    private void CreateSubtractionQuestions(IDbCommand dbCommand, int minResult, int maxResult) {
         string level = "", question = "", goodAnswer = "";
         string[] answers = { "", "", "" };
         int goodAnswerIndex;
@@ -197,10 +218,59 @@ public class DbHelper {
 
         System.Random random = new System.Random();
 
-        level = "2";
-        int i = 0;
+        level = minResult == 0 ? "2" : "6";
+        for (int i = minResult; i <= maxResult; i++) {
+            for (int j = 0; j <= i - minResult; j++) {
+                question = i + " - " + j;
+                goodAnswer = (i - j) + "";
+
+                goodAnswerIndex = random.Next(3);
+                answers[goodAnswerIndex] = goodAnswer;
+
+                offsets.Add(0);
+                offsets.Add(0);
+
+                do {
+                    offsets[0] = random.Next(11) - 5;
+                } while (offsets[0] == 0 || i - j + offsets[0] < 0);
+
+                do {
+                    offsets[1] = random.Next(11) - 5;
+                } while (offsets[0] == offsets[1] || offsets[1] == 0 || i - j + offsets[1] < 0);
+
+                for (int k = 0; k < 3; k++) {
+                    if (k != goodAnswerIndex) {
+                        answers[k] = (i - j + offsets[0]) + "";
+                        offsets.RemoveAt(0);
+                    }
+                }
+
+                string sqlQuery = String.Format("INSERT INTO Data(lvl, question, answer1, answer2, answer3, goodanswer) " +
+                    "VALUES(\"{0}\", \"{1}\", \"{2}\", \"{3}\", \"{4}\", \"{5}\")",
+                    level, question, answers[0], answers[1], answers[2], goodAnswer);
+                dbCommand.CommandText = sqlQuery;
+                dbCommand.ExecuteScalar();
+            }
+        }
+    }
+
+    private void CreateMultiplicationLevelDb(IDbCommand dbCommand, int minResult, int maxResult) {
+        string level = "", question = "", goodAnswer = "";
+        string[] answers = { "", "", "" };
+        int goodAnswerIndex;
+        List<int> offsets = new List<int>();
+
+        System.Random random = new System.Random();
+
+        level = minResult == 0 ? "3" : "7";
+        int i = minResult == 0? 0 : 1;
         while (i <= maxResult) {
-            int j = 0;
+            int j;
+            if (i == 0) {
+                j = 0;
+            } else {
+                j = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(minResult) / Convert.ToDouble(i)));
+            }
             do {
                 question = i + " * " + j;
                 goodAnswer = (i * j) + "";
@@ -238,7 +308,7 @@ public class DbHelper {
         }
     }
 
-    private void CreateDivisionLevelDb(IDbCommand dbCommand, int maxResult) {
+    private void CreateDivisionLevelDb(IDbCommand dbCommand, int minResult, int maxResult) {
         string level = "", question = "", goodAnswer = "";
         string[] answers = { "", "", "" };
         int goodAnswerIndex;
@@ -246,8 +316,8 @@ public class DbHelper {
 
         System.Random random = new System.Random();
 
-        level = "3";
-        for (int i = 1; i <= maxResult; i++){
+        level = minResult == 0? "4" : "8";
+        for (int i = minResult + 1; i <= maxResult; i++){
             for (int j = maxResult; j > 0; j--) {
                 if ((i % j) != 0) {
                     continue;

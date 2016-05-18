@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class QuestionManager {
-    private int currentLevel;
     private List<QuestionModel> questions;
 
     private DbHelper dbHelper;
@@ -13,16 +12,13 @@ public class QuestionManager {
 
     public QuestionManager() {
         dbHelper = new DbHelper();
-        currentLevel = 1;
         LoadQuestions();        
     }
 
-    public void SetCurrentLevel(int level) {
-        this.currentLevel = level;
-    }
-
-    public int GetCurrentLevel() {
-        return this.currentLevel;
+    public void ReloadQuestions() {
+        Debug.Log("Reloading questions for level " + MainMenu.lv);
+        questions.Clear();
+        LoadQuestions();
     }
 
     public QuestionModel GetNewQuestion() {
@@ -44,7 +40,7 @@ public class QuestionManager {
 
 
     private void LoadQuestions() {
-        questions = dbHelper.GetQuestionsFromLevel(this.currentLevel);
+        questions = dbHelper.GetQuestionsFromLevel(MainMenu.lv);
         if (questions.Count == 0) {
             throw new NoQuestionsException();
         }

@@ -62,6 +62,10 @@ public class QuestionView : MonoBehaviour {
 
     }
 
+    public void OnNewLevel() {
+        manager.ReloadQuestions();
+    }
+
     private void verifyAnswer(string chosenAnswer) {
         /* if (manager.IsCorrect(chosenAnswer)) {
              //Detonate.Answer = 1;

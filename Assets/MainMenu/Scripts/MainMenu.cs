@@ -4,7 +4,7 @@ using System.Collections;
 public class MainMenu : MonoBehaviour {
     public Texture bacgroundTexture;
     private int pmenu = 0;
-    public static int lv;
+    public static int lv = 1;
     void OnGUI()
     { 
         // Display background texture
