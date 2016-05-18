@@ -86,7 +86,7 @@ public class DbHelper {
         }
     }
 
-    public List<ScoreModel> GetScores() {
+    public List<ScoreModel> GetScores(bool sorted, int count) {
         List<ScoreModel> scoreList = new List<ScoreModel>();
 
         using (IDbConnection dbConnection = new SqliteConnection(scoreDbUri)) {
@@ -109,6 +109,11 @@ public class DbHelper {
                 }
             }
         }
+        if (sorted) {
+            scoreList.Sort();
+            scoreList.Reverse();
+        }
+        scoreList = scoreList.GetRange(0, count);
         return scoreList;
     }
 

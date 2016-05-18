@@ -4,6 +4,8 @@ using System.Collections;
 public class PlayerHealth : MonoBehaviour {
     public static  int Health = 5;
     GameObject[] gameObjects;
+
+    private bool recordSaved = false;
 	// Use this for initialization
 	void Start () {
 	
@@ -14,6 +16,13 @@ public class PlayerHealth : MonoBehaviour {
         if (PlayerHealth.Health == 0)
         {
             Time.timeScale = 0.0f;
+            if (!recordSaved) {
+                DbHelper dbHelper = new DbHelper();
+                dbHelper.AddScoreRecord(MainMenu.username, Oncollision.score);
+                Oncollision.score = 0;
+                recordSaved = true;
+            }
+
         }
 
 	}
