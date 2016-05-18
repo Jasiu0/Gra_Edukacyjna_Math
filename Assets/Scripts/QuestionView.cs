@@ -14,14 +14,14 @@ public class QuestionView : MonoBehaviour {
     private GameObject background;
     void Start() {
 
-        questionRect = new Rect(0, Screen.height - 90f,
-            Screen.width * 0.85f, 40);
-        answer1Rect = new Rect(0, Screen.height - 50f,
-            Screen.width / 3, 50);
-        answer2Rect = new Rect(Screen.width / 3, Screen.height - 50,
-            Screen.width / 3, 50);
-        answer3Rect = new Rect(2 * Screen.width / 3, Screen.height - 50,
-            Screen.width / 3, 50);
+        questionRect = new Rect(0, Screen.height * 0.78f,
+            Screen.width * 0.85f, Screen.height * 0.11f);
+        answer1Rect = new Rect(0, Screen.height * 0.89f,
+            Screen.width / 3, Screen.height * 0.11f);
+        answer2Rect = new Rect(Screen.width / 3, Screen.height * 0.89f,
+            Screen.width / 3, Screen.height * 0.11f);
+        answer3Rect = new Rect(2 * Screen.width / 3, Screen.height * 0.89f,
+            Screen.width / 3, Screen.height * 0.11f);
 
 
         manager = new QuestionManager();

@@ -12,15 +12,17 @@ public class DbHelper {
 
     public DbHelper() {
         //Uncomment following 2 lines when debugging on PC
-        this.questionDbUri = "URI=file:" + Application.dataPath + "/Database/QuestionDb.sqlite";
-        this.scoreDbUri = "URI=file:" + Application.dataPath + "/Database/ScoreDb.sqlite";
+        //this.questionDbUri = "URI=file:" + Application.dataPath + "/Database/QuestionDb.sqlite";
+        //this.scoreDbUri = "URI=file:" + Application.dataPath + "/Database/ScoreDb.sqlite";
+
 
         //Uncomment following 2 lines when debugging on Android Device
-        //this.questionDbUri = "URI=file:" + Application.persistentDataPath + "/QuestionDb.sqlite";
-        //this.scoreDbUri = "URI=file:" + Application.persistentDataPath + "/ScoreDb.sqlite";
+        this.questionDbUri = "URI=file:" + Application.persistentDataPath + "/QuestionDb.sqlite";
+        this.scoreDbUri = "URI=file:" + Application.persistentDataPath + "/ScoreDb.sqlite";
 
-        //Uncomment when building first time
+        //Uncomment when building first time on Android device
         //CreateQuestionDatabase();  
+        //CreateScoreDatabase();
     }     
 
     public void CreateQuestionDatabase() {
@@ -28,8 +30,8 @@ public class DbHelper {
             dbConnection.Open();
 
             using (IDbCommand dbCommand = dbConnection.CreateCommand()) {
-                //CreateQuestionDataTable(dbCommand);
-                ClearDb(dbCommand);
+                CreateQuestionDataTable(dbCommand);
+                //ClearDb(dbCommand);
 
                 CreateAdditionQuestions(dbCommand, 0, 25);
                 CreateSubtractionQuestions(dbCommand, 0, 25);
@@ -39,6 +41,22 @@ public class DbHelper {
                 CreateSubtractionQuestions(dbCommand, 25, 50);
                 CreateMultiplicationLevelDb(dbCommand, 25, 50);
                 CreateDivisionLevelDb(dbCommand, 25, 50);
+            }
+            dbConnection.Close();
+        }
+    }
+
+    public void CreateScoreDatabase() {
+        using (IDbConnection dbConnection = new SqliteConnection(scoreDbUri)) {
+            dbConnection.Open();
+
+            using (IDbCommand dbCommand = dbConnection.CreateCommand()) {
+                string sqlQuery = "CREATE TABLE 'Data' (" +
+	                              "'id' INTEGER PRIMARY KEY AUTOINCREMENT," +
+	                              "'name'  TEXT NOT NULL," +
+	                              "'score' INTEGER NOT NULL); ";
+                dbCommand.CommandText = sqlQuery;
+                dbCommand.ExecuteScalar();
             }
             dbConnection.Close();
         }
@@ -113,7 +131,15 @@ public class DbHelper {
                     }
                 }
             }
+            dbConnection.Close();
         }
+        if (scoreList.Count < count) {
+            for (int i = 0; i < count - scoreList.Count; i++) {
+                AddScoreRecord("Player", 0);
+            }
+            scoreList = GetScores(true, count);
+        }
+
         if (sorted) {
             scoreList.Sort();
             scoreList.Reverse();
