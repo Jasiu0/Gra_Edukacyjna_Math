@@ -41,9 +41,17 @@ public class PlayerHealth : MonoBehaviour {
 
     }
     private GUIStyle guiStyle = new GUIStyle();
+    private GUIStyle guiStyle_button;
     void OnGUI()
-    { 
-        
+    {
+
+
+        guiStyle_button = new GUIStyle(GUI.skin.button);
+        guiStyle_button.normal.textColor = Color.white;
+        guiStyle_button.fontSize = 30;  //must be int, obviously...
+        guiStyle_button.alignment = TextAnchor.MiddleCenter;
+
+
         guiStyle.fontSize = 20;
         guiStyle.normal.textColor = Color.white;
         GUI.depth = 0;
@@ -55,15 +63,15 @@ public class PlayerHealth : MonoBehaviour {
             guiStyle.fontStyle = FontStyle.Italic;
             GUI.depth = 0;
             GUI.Label(new Rect(Screen.width * 0.28f, Screen.height * 0.08f, Screen.width * 0.5f, 50), "Game Over", guiStyle);
-            
-            if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.28f, Screen.width * 0.5f, Screen.height * .1f), "Restart"))
+
+            if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.28f, Screen.width * 0.5f, Screen.height * .1f), "Restart", guiStyle_button))
              {
                 Time.timeScale = 1;
                 DestroyAllObjects("zombie");
                 DestroyAllObjects("wybuch");
                 DestroyAllObjects("bomba");
             }
-            if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.42f, Screen.width * 0.5f, Screen.height * .1f), "Main Menu"))
+            if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.42f, Screen.width * 0.5f, Screen.height * .1f), "Main Menu", guiStyle_button))
             {
                 Time.timeScale = 1;
                 DestroyAllObjects("zombie");
@@ -71,7 +79,7 @@ public class PlayerHealth : MonoBehaviour {
                 DestroyAllObjects("bomba");
                 Application.LoadLevel("MainMenu"); 
             }
-            if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.55f, Screen.width * 0.5f, Screen.height * .1f), "Quit Game"))
+            if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.55f, Screen.width * 0.5f, Screen.height * .1f), "Quit Game", guiStyle_button))
             {
                 Application.Quit();
             }

@@ -12,12 +12,28 @@ public class Oncollision : MonoBehaviour {
     private GameObject questionView;
 
     private bool recordSaved = false;
+
+    private bool showText = false;
+    private float currentTime = 0.0f, executedTime = 0.0f, timeToWait = 5.0f;
     void Start () {
         questionView = GameObject.FindWithTag("questionView");
     }
 	
 	// Update is called once per frame
 	void Update () {
+        currentTime = Time.time;
+        if(zombieKilled == 0)
+             showText = true;
+         
+         if(executedTime != 0.0f)
+         {
+             if(currentTime - executedTime > timeToWait)
+             {
+                 executedTime = 0.0f;
+                 showText = false;
+             }
+         }
+
         if (!gameInProgress) {
             Time.timeScale = 0.0f;
             if (!recordSaved) {
@@ -29,6 +45,7 @@ public class Oncollision : MonoBehaviour {
         }
 	
 	}
+
     void OnCollisionEnter2D(Collision2D coll)
     {
         Debug.Log("KOLIZJA!");
@@ -39,29 +56,38 @@ public class Oncollision : MonoBehaviour {
             score += MainMenu.lv;
 
             zombieKilled++;
-            if (zombieKilled > 5) {
+            if (zombieKilled > 0) {
                 gameInProgress = ++MainMenu.lv < 9;
                 questionView.SendMessage("OnNewLevel", null);
-                zombieKilled = 0;               
+                zombieKilled = 0;
+                EscapeOfZombies();
+                executedTime = Time.time;
+
             }
 
         }
 
     }
 
+  
     void DestroyAllObjects(string tag) {
         gameObjects = GameObject.FindGameObjectsWithTag(tag);
         for (var i = 0; i < gameObjects.Length; i++) {
             Destroy(gameObjects[i]);
         }
+    }
 
+    void EscapeOfZombies()
+    {    
+        gameObjects = GameObject.FindGameObjectsWithTag("zombie");
+        PlayerHealth.Health += gameObjects.Length-1;
+        DestroyAllObjects("zombie");
+            
     }
 
     private GUIStyle guiStyle = new GUIStyle();
     void OnGUI() {
-        if (gameInProgress) {
-            return;
-        }
+
 
         guiStyle.fontSize = 20;
         guiStyle.normal.textColor = Color.white;
@@ -72,7 +98,22 @@ public class Oncollision : MonoBehaviour {
         guiStyle.normal.textColor = Color.white;
         guiStyle.fontStyle = FontStyle.Italic;
         GUI.depth = 0;
-        GUI.Label(new Rect(Screen.width * 0.28f, Screen.height * 0.08f, Screen.width * 0.5f, 50), "Game Completed!", guiStyle);
+
+
+        if (gameInProgress) {
+            if (showText)
+            {
+                GUI.Label(new Rect(Screen.width * 0.4f, Screen.height * 0.08f, Screen.width * 0.5f, 50), "Level" + MainMenu.lv + "!", guiStyle);
+            }
+  
+
+            return;
+        }
+        
+
+
+
+        GUI.Label(new Rect(Screen.width * 0.25f, Screen.height * 0.08f, Screen.width * 0.5f, 50), "Game Completed!", guiStyle);
 
         if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.28f, Screen.width * 0.5f, Screen.height * .1f), "Restart")) {
             Time.timeScale = 1;

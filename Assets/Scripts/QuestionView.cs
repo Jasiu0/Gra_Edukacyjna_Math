@@ -12,6 +12,8 @@ public class QuestionView : MonoBehaviour {
     private QuestionModel currentQuestion;
 
     private GameObject background;
+
+    private GUIStyle guiStyle;
     void Start() {
 
         questionRect = new Rect(0, Screen.height * 0.78f,
@@ -31,22 +33,27 @@ public class QuestionView : MonoBehaviour {
     }
    
     void OnGUI() {
+       
+        guiStyle = new GUIStyle(GUI.skin.button);
+        guiStyle.normal.textColor = Color.white;
+        guiStyle.fontSize = 30;  //must be int, obviously...
+        guiStyle.alignment = TextAnchor.MiddleCenter;
 
         if (Options.Option == 0)
         {
-            GUI.Box(questionRect, currentQuestion.Question);
+            GUI.Box(questionRect, currentQuestion.Question, guiStyle);
 
-            if (GUI.Button(answer1Rect, currentQuestion.Answer1))
+            if (GUI.Button(answer1Rect, currentQuestion.Answer1, guiStyle))
             {
                 verifyAnswer(currentQuestion.Answer1);
             }
 
-            if (GUI.Button(answer2Rect, currentQuestion.Answer2))
+            if (GUI.Button(answer2Rect, currentQuestion.Answer2, guiStyle))
             {
                 verifyAnswer(currentQuestion.Answer2);
             }
 
-            if (GUI.Button(answer3Rect, currentQuestion.Answer3))
+            if (GUI.Button(answer3Rect, currentQuestion.Answer3, guiStyle))
             {
                 verifyAnswer(currentQuestion.Answer3);
             }

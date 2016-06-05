@@ -6,6 +6,7 @@ public class Options : MonoBehaviour {
     public Texture bacgroundTexture;
     GameObject[] gameObjects;
     int temp = 0;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -33,10 +34,17 @@ public class Options : MonoBehaviour {
         }
         
     }
-
+    private GUIStyle guiStyle_button;
     private GUIStyle guiStyle = new GUIStyle();
+
     void OnGUI()
     {
+
+        guiStyle_button = new GUIStyle(GUI.skin.button);
+        guiStyle_button.normal.textColor = Color.white;
+        guiStyle_button.fontSize = 30;  //must be int, obviously...
+        guiStyle_button.alignment = TextAnchor.MiddleCenter;
+
         if (Option == 1)
         {
             guiStyle.fontSize = 50;
@@ -45,12 +53,12 @@ public class Options : MonoBehaviour {
             GUI.depth = 0;
             GUI.Label(new Rect(Screen.width * 0.37f, Screen.height * 0.08f, Screen.width * 0.5f, 50), "Options", guiStyle);
 
-            if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.28f, Screen.width * 0.5f, Screen.height * .1f), "Resume"))
+            if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.28f, Screen.width * 0.5f, Screen.height * .1f), "Resume", guiStyle_button))
             {
                 Time.timeScale = 1;
                 Option = 0;
             }
-            if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.42f, Screen.width * 0.5f, Screen.height * .1f), "Restart"))
+            if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.42f, Screen.width * 0.5f, Screen.height * .1f), "Restart", guiStyle_button))
             {
                 temp = PlayerHealth.Health;
                 Time.timeScale = 1;
@@ -59,7 +67,7 @@ public class Options : MonoBehaviour {
                 DestroyAllObjects("bomba");
                 Option = 0;
             }
-            if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.55f, Screen.width * 0.5f, Screen.height * .1f), "Main Menu"))
+            if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.55f, Screen.width * 0.5f, Screen.height * .1f), "Main Menu", guiStyle_button))
             {
                 Time.timeScale = 1;
                 DestroyAllObjects("zombie");
@@ -69,7 +77,7 @@ public class Options : MonoBehaviour {
                 Application.LoadLevel("MainMenu");
                 
             }
-            if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.68f, Screen.width * 0.5f, Screen.height * .1f), "Quit Game"))
+            if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.68f, Screen.width * 0.5f, Screen.height * .1f), "Quit Game", guiStyle_button))
             {
                 Application.Quit();
             }

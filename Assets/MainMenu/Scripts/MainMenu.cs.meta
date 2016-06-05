@@ -1,10 +1,12 @@
 fileFormatVersion: 2
 guid: b38da218ca356754c86900cbdc0105d3
-timeCreated: 1459812143
+timeCreated: 1464534458
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - bacgroundTexture: {instanceID: 0}
+  - font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
