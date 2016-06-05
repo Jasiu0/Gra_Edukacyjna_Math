@@ -15,6 +15,7 @@ public class Oncollision : MonoBehaviour {
 
     private bool showText = false;
     private float currentTime = 0.0f, executedTime = 0.0f, timeToWait = 5.0f;
+    private bool show = false;
     void Start () {
         questionView = GameObject.FindWithTag("questionView");
     }
@@ -22,7 +23,7 @@ public class Oncollision : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         currentTime = Time.time;
-        if(zombieKilled == 0)
+        if(show)
              showText = true;
          
          if(executedTime != 0.0f)
@@ -31,6 +32,7 @@ public class Oncollision : MonoBehaviour {
              {
                  executedTime = 0.0f;
                  showText = false;
+                 show = false;
              }
          }
 
@@ -56,10 +58,12 @@ public class Oncollision : MonoBehaviour {
             score += MainMenu.lv;
 
             zombieKilled++;
-            if (zombieKilled > 0) {
+            if (zombieKilled > 5) {
                 gameInProgress = ++MainMenu.lv < 9;
                 questionView.SendMessage("OnNewLevel", null);
                 zombieKilled = 0;
+                show = true;
+
                 EscapeOfZombies();
                 executedTime = Time.time;
 
