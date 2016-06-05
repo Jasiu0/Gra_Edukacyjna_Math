@@ -122,8 +122,8 @@ public class MainMenu : MonoBehaviour
         }
         else if (pmenu == 2)
         {
-            GUI.Label(new Rect(Screen.width * 0.25f, Screen.height * 0.1f, Screen.width * 0.25f, Screen.height * 0.125f), "Player name: ", guiStyle);
-            username = GUI.TextField(new Rect(Screen.width * 0.5f, Screen.height * 0.1f, Screen.width * 0.25f, Screen.height * 0.125f), username);
+            GUI.Label(new Rect(Screen.width * 0.15f, Screen.height * 0.1f, Screen.width * 0.35f, Screen.height * 0.125f), "Player name: ", guiStyle);
+            username = GUI.TextField(new Rect(Screen.width * 0.5f, Screen.height * 0.1f, Screen.width * 0.35f, Screen.height * 0.125f), username, guiStyle);
         }
         else if (pmenu == 3)
         {
@@ -135,12 +135,12 @@ public class MainMenu : MonoBehaviour
             headerStyle.fontStyle = FontStyle.Bold;
             headerStyle.normal.textColor = Color.white;
 
-            GUI.Box(new Rect(Screen.width * 0.25f, 0, Screen.width * 0.25f, Screen.height * 0.09f), "Player", headerStyle);
-            GUI.Box(new Rect(Screen.width * 0.5f, 0, Screen.width * 0.25f, Screen.height * 0.09f), "Score", headerStyle);
+            GUI.Box(new Rect(Screen.width * 0.25f, 0, Screen.width * 0.25f, Screen.height * 0.09f), "Player", guiStyle);
+            GUI.Box(new Rect(Screen.width * 0.5f, 0, Screen.width * 0.25f, Screen.height * 0.09f), "Score", guiStyle);
             for (int i = 0; i < scoresToShow; i++)
             {
-                GUI.Box(new Rect(Screen.width * 0.25f, Screen.height * (i + 1) * 0.09f, Screen.width * 0.25f, Screen.height * 0.09f), scores[i].Name);
-                GUI.Box(new Rect(Screen.width * 0.5f, Screen.height * (i + 1) * 0.09f, Screen.width * 0.25f, Screen.height * 0.09f), scores[i].Score.ToString());
+                GUI.Box(new Rect(Screen.width * 0.15f, Screen.height * (i + 1) * 0.09f, Screen.width * 0.35f, Screen.height * 0.09f), scores[i].Name, guiStyle);
+                GUI.Box(new Rect(Screen.width * 0.5f, Screen.height * (i + 1) * 0.09f, Screen.width * 0.35f, Screen.height * 0.09f), scores[i].Score.ToString(), guiStyle);
             }
         }
     }
