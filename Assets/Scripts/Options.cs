@@ -42,11 +42,13 @@ public class Options : MonoBehaviour {
 
         guiStyle_button = new GUIStyle(GUI.skin.button);
         guiStyle_button.normal.textColor = Color.white;
-        guiStyle_button.fontSize = 30;  //must be int, obviously...
+        guiStyle_button.fontSize = 30; 
         guiStyle_button.alignment = TextAnchor.MiddleCenter;
 
         if (Option == 1)
         {
+            Affint.Pause();
+
             guiStyle.fontSize = 50;
             guiStyle.normal.textColor = Color.white;
             guiStyle.fontStyle = FontStyle.Italic;
@@ -57,6 +59,8 @@ public class Options : MonoBehaviour {
             {
                 Time.timeScale = 1;
                 Option = 0;
+
+                Affint.Start();
             }
             if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.42f, Screen.width * 0.5f, Screen.height * .1f), "Restart", guiStyle_button))
             {
@@ -66,6 +70,9 @@ public class Options : MonoBehaviour {
                 DestroyAllObjects("wybuch");
                 DestroyAllObjects("bomba");
                 Option = 0;
+
+                Affint.Stop();
+                Affint.Start();
             }
             if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.55f, Screen.width * 0.5f, Screen.height * .1f), "Main Menu", guiStyle_button))
             {
@@ -75,14 +82,15 @@ public class Options : MonoBehaviour {
                 DestroyAllObjects("bomba");
                 Option = 0;
                 Application.LoadLevel("MainMenu");
-                
+
+                Affint.Stop();
             }
             if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.68f, Screen.width * 0.5f, Screen.height * .1f), "Quit Game", guiStyle_button))
             {
+                Affint.Stop();
                 Application.Quit();
             }
             
-
         }
     }
 }

@@ -58,66 +58,42 @@ public class MainMenu : MonoBehaviour
         {
             if (GUI.Button(new Rect(Screen.width * 0.15f, Screen.height * 0.3f, Screen.width * 0.3f, Screen.height * .1f), "Level 1", guiStyle))
             {
-                PlayerHealth.Health = 5;
-                pmenu = 0;
-                lv = 1;
-                Application.LoadLevel("Mapa");
+                startGame(1);
             }
 
             if (GUI.Button(new Rect(Screen.width * 0.15f, Screen.height * 0.45f, Screen.width * 0.3f, Screen.height * .1f), "Level 2", guiStyle))
             {
-                PlayerHealth.Health = 5;
-                pmenu = 0;
-                lv = 2;
-                Application.LoadLevel("Mapa");
+                startGame(2);
             }
 
             if (GUI.Button(new Rect(Screen.width * 0.15f, Screen.height * 0.6f, Screen.width * 0.3f, Screen.height * .1f), "Level 3", guiStyle))
             {
-                PlayerHealth.Health = 5;
-                pmenu = 0;
-                lv = 3;
-                Application.LoadLevel("Mapa");
+                startGame(3);
             }
 
             if (GUI.Button(new Rect(Screen.width * 0.15f, Screen.height * 0.75f, Screen.width * 0.3f, Screen.height * .1f), "Level 4", guiStyle))
             {
-                PlayerHealth.Health = 5;
-                pmenu = 0;
-                lv = 4;
-                Application.LoadLevel("Mapa");
+                startGame(4);
             }
 
             if (GUI.Button(new Rect(Screen.width * 0.55f, Screen.height * 0.3f, Screen.width * 0.3f, Screen.height * .1f), "Level 5", guiStyle))
             {
-                PlayerHealth.Health = 5;
-                pmenu = 0;
-                lv = 5;
-                Application.LoadLevel("Mapa");
+                startGame(5);
             }
 
             if (GUI.Button(new Rect(Screen.width * 0.55f, Screen.height * 0.45f, Screen.width * 0.3f, Screen.height * .1f), "Level 6", guiStyle))
             {
-                PlayerHealth.Health = 5;
-                pmenu = 0;
-                lv = 6;
-                Application.LoadLevel("Mapa");
+                startGame(6);
             }
 
             if (GUI.Button(new Rect(Screen.width * 0.55f, Screen.height * 0.6f, Screen.width * 0.3f, Screen.height * .1f), "Level 7", guiStyle))
             {
-                PlayerHealth.Health = 5;
-                pmenu = 0;
-                lv = 7;
-                Application.LoadLevel("Mapa");
+                startGame(7);
             }
 
             if (GUI.Button(new Rect(Screen.width * 0.55f, Screen.height * 0.75f, Screen.width * 0.3f, Screen.height * .1f), "Level 8", guiStyle))
             {
-                PlayerHealth.Health = 5;
-                pmenu = 0;
-                lv = 8;
-                Application.LoadLevel("Mapa");
+                startGame(8);
             }
         }
         else if (pmenu == 2)
@@ -143,6 +119,14 @@ public class MainMenu : MonoBehaviour
                 GUI.Box(new Rect(Screen.width * 0.5f, Screen.height * (i + 1) * 0.09f, Screen.width * 0.35f, Screen.height * 0.09f), scores[i].Score.ToString(), guiStyle);
             }
         }
+    }
+    private void startGame(int gameLevel) {
+        PlayerHealth.Health = 5;
+        pmenu = 0;
+        lv = gameLevel;
+        Application.LoadLevel("Mapa");
+        Affint.Start();
+
     }
     // Use this for initialization
     void Start()

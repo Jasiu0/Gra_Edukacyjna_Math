@@ -30,12 +30,24 @@ public class Affint {
     public static void Start() {
         timer.Interval = INTERVAL * 1000;
         timer.Elapsed += new ElapsedEventHandler(TimerElapsed);
+        zombieKilled = Oncollision.zombieKilled;
         timer.Start();
+    }
+
+    public static void Pause() {
+        timer.Stop();
     }
 
     public static void Stop() {
         timer.Stop();
-    }
+        ZombieSpeedFactor = 1.0f;
+        EmotionalStatePoints = 0;
+        Pulse = 80;
+
+        zombieKilled = Oncollision.zombieKilled;
+        zombieKilledInInterval = 0;
+        EmotionalStateChanged = false;
+}
 
     private static void TimerElapsed(object sender, ElapsedEventArgs e) {
         Debug.Log("Timer callback started");
@@ -62,7 +74,7 @@ public class Affint {
         }
         Debug.Log("ESP: " + EmotionalStatePoints);
 
-        ZombieSpeedFactor = 1 + EmotionalStatePoints / 10;
+        ZombieSpeedFactor = 1f + ((float)EmotionalStatePoints / 10f);
         if (ZombieSpeedFactor < 0.1) {
             ZombieSpeedFactor = 0.1f;
         }

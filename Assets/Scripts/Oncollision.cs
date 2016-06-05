@@ -67,6 +67,8 @@ public class Oncollision : MonoBehaviour {
                 EscapeOfZombies();
                 executedTime = Time.time;
 
+                Affint.Stop();
+                Affint.Start();
             }
 
         }
@@ -113,9 +115,9 @@ public class Oncollision : MonoBehaviour {
 
             return;
         }
-        
 
 
+        Affint.Stop();
 
         GUI.Label(new Rect(Screen.width * 0.25f, Screen.height * 0.08f, Screen.width * 0.5f, 50), "Game Completed!", guiStyle);
 

@@ -58,6 +58,8 @@ public class PlayerHealth : MonoBehaviour {
         GUI.Label(new Rect(Screen.width-72,Screen.height-78, 100, 20), Health.ToString(),guiStyle);
         if (Health == 0)
         {
+            Affint.Stop();
+
             guiStyle.fontSize = 50;
             guiStyle.normal.textColor = Color.white;
             guiStyle.fontStyle = FontStyle.Italic;

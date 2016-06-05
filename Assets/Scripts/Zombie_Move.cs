@@ -17,7 +17,7 @@ public class Zombie_Move : MonoBehaviour
     {
         if (speedY == 0)
         {
-            GetComponent<Rigidbody2D>().velocity = new Vector2(-speed, speedY);
+            GetComponent<Rigidbody2D>().velocity = new Vector2(-speed, speedY) * Affint.ZombieSpeedFactor;
         }
     }
     GameObject[] gameObjects;
