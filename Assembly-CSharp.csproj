@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\MainMenu\Scripts\MainMenu.cs" />
+     <Compile Include="Assets\Scripts\Affint.cs" />
      <Compile Include="Assets\Scripts\BombHealth.cs" />
      <Compile Include="Assets\Scripts\DbHelper.cs" />
      <Compile Include="Assets\Scripts\DestroyExplosion.cs" />
@@ -59,9 +60,12 @@
      <Compile Include="Assets\Scripts\QuestionModel.cs" />
      <Compile Include="Assets\Scripts\QuestionView.cs" />
      <Compile Include="Assets\Scripts\ScoreModel.cs" />
+     <Compile Include="Assets\Scripts\SocketListener.cs" />
      <Compile Include="Assets\Scripts\Spawn.cs" />
      <Compile Include="Assets\Scripts\Zombie_Move.cs" />
+     <Compile Include="Assets\Scripts\plugin.cs" />
      <Compile Include="Assets\Scripts\tymczasowo.cs" />
+     <None Include="Assets\Plugins\Android\AndroidMainfest.xml" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Users/Jasiu/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -70,6 +74,9 @@
  </Reference>
  <Reference Include="Mono.Data.Sqlite">
  <HintPath>C:/Users/Jasiu/Documents/msi-affint/Assets/Plugins/Mono.Data.Sqlite.dll</HintPath>
+ </Reference>
+ <Reference Include="SharpConnect">
+ <HintPath>C:/Users/Jasiu/Documents/msi-affint/Assets/Plugins/SharpConnect.dll</HintPath>
  </Reference>
  <Reference Include="System.Data">
  <HintPath>C:/Users/Jasiu/Documents/msi-affint/Assets/Plugins/System.Data.dll</HintPath>

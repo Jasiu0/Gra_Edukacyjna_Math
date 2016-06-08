@@ -12,17 +12,17 @@ public class DbHelper {
 
     public DbHelper() {
         //Uncomment following 2 lines when debugging on PC
-        this.questionDbUri = "URI=file:" + Application.dataPath + "/Database/QuestionDb.sqlite";
-        this.scoreDbUri = "URI=file:" + Application.dataPath + "/Database/ScoreDb.sqlite";
+       // this.questionDbUri = "URI=file:" + Application.dataPath + "/Database/QuestionDb.sqlite";
+      //  this.scoreDbUri = "URI=file:" + Application.dataPath + "/Database/ScoreDb.sqlite";
 
 
         //Uncomment following 2 lines when debugging on Android Device
-       // this.questionDbUri = "URI=file:" + Application.persistentDataPath + "/QuestionDb.sqlite";
-        //this.scoreDbUri = "URI=file:" + Application.persistentDataPath + "/ScoreDb.sqlite";
+        this.questionDbUri = "URI=file:" + Application.persistentDataPath + "/QuestionDb.sqlite";
+        this.scoreDbUri = "URI=file:" + Application.persistentDataPath + "/ScoreDb.sqlite";
 
         //Uncomment when building first time on Android device
-        //CreateQuestionDatabase();  
-        //CreateScoreDatabase();
+        CreateQuestionDatabase();  
+        CreateScoreDatabase();
     }     
 
     public void CreateQuestionDatabase() {
