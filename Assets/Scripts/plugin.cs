@@ -4,7 +4,7 @@ using System;
 
 public class plugin : MonoBehaviour
 {
-    static float RValue;
+    float RValue;
     // Use this for initialization
     void Start()
     {

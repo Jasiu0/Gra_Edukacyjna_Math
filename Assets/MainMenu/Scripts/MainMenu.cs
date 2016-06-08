@@ -10,6 +10,7 @@ public class MainMenu : MonoBehaviour
     public static string username = "Player";
     public Font font; //set it in the inspector
     private GUIStyle guiStyle;
+    public static bool music = true;
     void OnGUI()
     {
         // Display background texture
@@ -100,6 +101,20 @@ public class MainMenu : MonoBehaviour
         {
             GUI.Label(new Rect(Screen.width * 0.15f, Screen.height * 0.1f, Screen.width * 0.35f, Screen.height * 0.125f), "Player name: ", guiStyle);
             username = GUI.TextField(new Rect(Screen.width * 0.5f, Screen.height * 0.1f, Screen.width * 0.35f, Screen.height * 0.125f), username, guiStyle);
+
+            GUI.Label(new Rect(Screen.width * 0.15f, Screen.height * 0.3f, Screen.width * 0.35f, Screen.height * 0.125f), "Music: ", guiStyle);
+           if(music == true)
+               if (GUI.Button(new Rect(Screen.width * 0.5f, Screen.height * 0.3f, Screen.width * 0.35f, Screen.height * 0.125f), "On", guiStyle))
+            {
+                music = false;
+                AudioListener.volume = 0;
+            }
+            if (music == false)
+                if (GUI.Button(new Rect(Screen.width * 0.5f, Screen.height * 0.3f, Screen.width * 0.35f, Screen.height * 0.125f), "Off", guiStyle))
+            {
+                music = true;
+                AudioListener.volume = 1;
+            }
         }
         else if (pmenu == 3)
         {

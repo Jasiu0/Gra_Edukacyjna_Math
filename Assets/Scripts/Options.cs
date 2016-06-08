@@ -74,7 +74,22 @@ public class Options : MonoBehaviour {
                 Affint.Stop();
                 Affint.Start();
             }
-            if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.55f, Screen.width * 0.5f, Screen.height * .1f), "Main Menu", guiStyle_button))
+
+            if (MainMenu.music == true)
+                if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.55f, Screen.width * 0.5f, Screen.height * .1f), "Music: On", guiStyle_button))
+                {
+                    MainMenu.music = false;
+                    AudioListener.volume = 0;
+                }
+            if (MainMenu.music == false)
+                if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.55f, Screen.width * 0.5f, Screen.height * .1f), "Music: Off", guiStyle_button))
+                {
+                    MainMenu.music = true;
+                    AudioListener.volume = 1;
+                }
+
+
+            if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.68f, Screen.width * 0.5f, Screen.height * .1f), "Main Menu", guiStyle_button))
             {
                 Time.timeScale = 1;
                 DestroyAllObjects("zombie");
@@ -85,7 +100,7 @@ public class Options : MonoBehaviour {
 
                 Affint.Stop();
             }
-            if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.68f, Screen.width * 0.5f, Screen.height * .1f), "Quit Game", guiStyle_button))
+            if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.81f, Screen.width * 0.5f, Screen.height * .1f), "Quit Game", guiStyle_button))
             {
                 Affint.Stop();
                 Application.Quit();

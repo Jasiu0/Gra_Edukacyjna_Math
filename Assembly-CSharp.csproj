@@ -60,7 +60,6 @@
      <Compile Include="Assets\Scripts\QuestionModel.cs" />
      <Compile Include="Assets\Scripts\QuestionView.cs" />
      <Compile Include="Assets\Scripts\ScoreModel.cs" />
-     <Compile Include="Assets\Scripts\SocketListener.cs" />
      <Compile Include="Assets\Scripts\Spawn.cs" />
      <Compile Include="Assets\Scripts\Zombie_Move.cs" />
      <Compile Include="Assets\Scripts\plugin.cs" />
