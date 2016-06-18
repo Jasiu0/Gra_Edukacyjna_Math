@@ -5,24 +5,17 @@ using System.Text;
 using System.Timers;
 using UnityEngine;
 
-public class Affint {
-    private const int PULSE_HIGH = 90;
-    private const int PULSE_LOW = 70;
-
-    private const int KILL_SPEED_HIGH = 3;
-    private const int KILL_SPEED_LOW = 2;
-
-    private const int INTERVAL = 15;
-
-    private const int HISTORY_LENGTH = 10;
+public class Affint : MonoBehaviour {
+    private const int INTERVAL = 10;
     
     public static float ZombieSpeedFactor = 1.0f;
-    public static int EmotionalStatePoints = 0;
-    private static int Pulse = 80;
 
     private static int zombieKilled = Oncollision.zombieKilled;
     private static int zombieKilledInInterval = 0;
-    private static bool EmotionalStateChanged = false;
+
+    private static int zombieEnteredInInterval = 0;
+
+    private static int questionsAnsweredInInterval = 0;
 
     private static Timer timer = new Timer();
 
@@ -41,47 +34,61 @@ public class Affint {
     public static void Stop() {
         timer.Stop();
         ZombieSpeedFactor = 1.0f;
-        EmotionalStatePoints = 0;
-        Pulse = 80;
+        questionsAnsweredInInterval = 0;
+        zombieEnteredInInterval = 0;
 
         zombieKilled = Oncollision.zombieKilled;
         zombieKilledInInterval = 0;
-        EmotionalStateChanged = false;
-}
+    }
+
+    public void QuestionAnswered() {
+        questionsAnsweredInInterval++;
+    }
+
+    public void ZombieEntered() {
+        zombieEnteredInInterval++;
+    }
+
+    public void OnDestroy() {
+        Stop();
+    }
 
     private static void TimerElapsed(object sender, ElapsedEventArgs e) {
-        Debug.Log("Timer callback started");
         zombieKilledInInterval = Oncollision.zombieKilled - zombieKilled;
-        Debug.Log("Killed " + zombieKilledInInterval + " zombies in last 5 seconds");
 
-        if (zombieKilledInInterval > KILL_SPEED_HIGH) {
-            EmotionalStatePoints++;
-            EmotionalStateChanged = true;
-        } else if (zombieKilledInInterval < KILL_SPEED_LOW) {
-            EmotionalStatePoints--;
-            EmotionalStateChanged = true;
+        float performanceFactor = 0;
+        if (questionsAnsweredInInterval != 0 && zombieEnteredInInterval != 0) {
+            performanceFactor = (float)Math.Pow(zombieKilledInInterval, 2) / (float)zombieEnteredInInterval / (float)questionsAnsweredInInterval;
         }
 
-        if (EmotionalStateChanged) {
-            //TODO Implement pulse read
-            if (EmotionalStatePoints > 0 &&
-                 Pulse > PULSE_LOW && Pulse < PULSE_HIGH) {
-                EmotionalStatePoints++;
-            } else if (EmotionalStatePoints < 0 &&
-                Pulse > PULSE_HIGH) {
-                EmotionalStatePoints--;
-            }
-        }
-        Debug.Log("ESP: " + EmotionalStatePoints);
-
-        ZombieSpeedFactor = 1f + ((float)EmotionalStatePoints / 10f);
-        if (ZombieSpeedFactor < 0.1) {
-            ZombieSpeedFactor = 0.1f;
+        if (zombieEnteredInInterval == 0) {
+            performanceFactor = 0.5f;
         }
 
-        Debug.Log("ZSF: " + ZombieSpeedFactor);
+        Debug.Log("Performance factor: " + zombieKilledInInterval + "^2/" + zombieEnteredInInterval + "/" + questionsAnsweredInInterval + " = " + performanceFactor);
+        if (performanceFactor < 0.5) {
+            decreaseZombieSpeedFactor();
+        } else if (performanceFactor > 0.8) {
+            increaseZombieSpeedFactor();
+        }
+
+        Debug.Log("Zombie speed factor = " + ZombieSpeedFactor);
 
         zombieKilled = Oncollision.zombieKilled;
+        questionsAnsweredInInterval = 0;
+        zombieEnteredInInterval = 0;
+    }
+
+    private static void increaseZombieSpeedFactor() {
+        if (ZombieSpeedFactor < 2.5f) {
+            ZombieSpeedFactor += 0.2f;
+        }
+    }
+
+    private static void decreaseZombieSpeedFactor() {
+        if (ZombieSpeedFactor > 0.2f) {
+            ZombieSpeedFactor -= 0.2f;
+        }
     }
 
 }
