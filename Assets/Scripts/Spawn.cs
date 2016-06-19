@@ -30,6 +30,8 @@ public class Spawn : MonoBehaviour {
                 case 3: zombie = zombie4; break;
             }
 
+           gameObject.SendMessage("ZombieEntered");
+
             float spawnY = Random.Range(-1, Camera.main.ScreenToWorldPoint(new Vector2(0, Screen.height)).y-0.5f);
             Instantiate(zombie, new Vector3(Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, 0)).x, spawnY, 0), transform.rotation);
         }

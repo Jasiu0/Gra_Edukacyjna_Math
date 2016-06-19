@@ -81,6 +81,7 @@ public class QuestionView : MonoBehaviour {
              //Debug.Log("Wrong Answer!");
          }*/
         bool doExplode = manager.IsCorrect(chosenAnswer);
+        background.SendMessage("QuestionAnswered");
         background.SendMessage("Explode", doExplode);
 
         //TODO Do the styling stuff
