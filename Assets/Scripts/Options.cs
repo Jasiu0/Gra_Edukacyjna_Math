@@ -24,10 +24,10 @@ public class Options : MonoBehaviour {
     void DestroyAllObjects(string tag)
     {
         gameObjects = GameObject.FindGameObjectsWithTag(tag);
-        if (tag == "zombie")
+      /*  if (tag == "zombie")
         {
             PlayerHealth.Health += 5 + gameObjects.Length - temp;
-        }
+        }*/
         for (var i = 0; i < gameObjects.Length; i++)
         {
             Destroy(gameObjects[i]);
@@ -65,6 +65,7 @@ public class Options : MonoBehaviour {
             if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.42f, Screen.width * 0.5f, Screen.height * .1f), "Restart", guiStyle_button))
             {
                 temp = PlayerHealth.Health;
+                PlayerHealth.Health = 5;
                 Time.timeScale = 1;
                 DestroyAllObjects("zombie");
                 DestroyAllObjects("wybuch");

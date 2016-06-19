@@ -30,10 +30,10 @@ public class PlayerHealth : MonoBehaviour {
     void DestroyAllObjects(string tag)
     {
         gameObjects = GameObject.FindGameObjectsWithTag(tag);
-        if (tag == "zombie")
+     /*   if (tag == "zombie")
         {
             PlayerHealth.Health += 5 + gameObjects.Length;
-        }      
+        }      */
         for (var i = 0; i < gameObjects.Length; i++)
         {
             Destroy(gameObjects[i]);
@@ -55,7 +55,7 @@ public class PlayerHealth : MonoBehaviour {
         guiStyle.fontSize = 20;
         guiStyle.normal.textColor = Color.white;
         GUI.depth = 0;
-        GUI.Label(new Rect(Screen.width-72,Screen.height-78, 100, 20), Health.ToString(),guiStyle);
+        GUI.Label(new Rect(Screen.width*0.88f,Screen.height*0.778f, 100, 20), Health.ToString(),guiStyle);
         if (Health == 0)
         {
             Affint.Stop();

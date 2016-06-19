@@ -19,11 +19,14 @@ public class Zombie_Move : MonoBehaviour
         {
             GetComponent<Rigidbody2D>().velocity = new Vector2(-speed, speedY) * Affint.ZombieSpeedFactor;
         }
+
+        if (GetComponent<Rigidbody2D>().position.x < -7.6f)
+        {
+            Debug.Log("Nope");
+            PlayerHealth.Health -= 1;
+            Destroy(gameObject);
+        }
     }
-    GameObject[] gameObjects;
-    void OnBecameInvisible()
-    {
-        PlayerHealth.Health -= 1;
-        Destroy(gameObject);
-    }
+
+
 }
