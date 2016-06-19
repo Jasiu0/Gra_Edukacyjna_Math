@@ -54,7 +54,7 @@ public class Oncollision : MonoBehaviour {
         if (coll.gameObject.tag == "zombie")
         {
             Destroy(coll.gameObject);
-            PlayerHealth.Health += 1;
+          //  PlayerHealth.Health += 1;
             score += MainMenu.lv;
 
             zombieKilled++;
@@ -86,26 +86,23 @@ public class Oncollision : MonoBehaviour {
     void EscapeOfZombies()
     {    
         gameObjects = GameObject.FindGameObjectsWithTag("zombie");
-        PlayerHealth.Health += gameObjects.Length-1;
+       // PlayerHealth.Health += gameObjects.Length-1;
         DestroyAllObjects("zombie");
             
     }
 
     private GUIStyle guiStyle = new GUIStyle();
+    private GUIStyle guiStyle_button;
     void OnGUI() {
-
-
-        guiStyle.fontSize = 20;
-        guiStyle.normal.textColor = Color.white;
-        GUI.depth = 0;
-        GUI.Label(new Rect(Screen.width - 72, Screen.height - 78, 100, 20), PlayerHealth.Health.ToString(), guiStyle);
+        guiStyle_button = new GUIStyle(GUI.skin.button);
+        guiStyle_button.normal.textColor = Color.white;
+        guiStyle_button.fontSize = 30;
+        guiStyle_button.alignment = TextAnchor.MiddleCenter;
 
         guiStyle.fontSize = 50;
         guiStyle.normal.textColor = Color.white;
         guiStyle.fontStyle = FontStyle.Italic;
         GUI.depth = 0;
-
-
         if (gameInProgress) {
             if (showText)
             {
@@ -121,20 +118,23 @@ public class Oncollision : MonoBehaviour {
 
         GUI.Label(new Rect(Screen.width * 0.25f, Screen.height * 0.08f, Screen.width * 0.5f, 50), "Game Completed!", guiStyle);
 
-        if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.28f, Screen.width * 0.5f, Screen.height * .1f), "Restart")) {
+        if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.28f, Screen.width * 0.5f, Screen.height * .1f), "Restart", guiStyle_button))
+        {
             Time.timeScale = 1;
             DestroyAllObjects("zombie");
             DestroyAllObjects("wybuch");
             DestroyAllObjects("bomba");
         }
-        if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.42f, Screen.width * 0.5f, Screen.height * .1f), "Main Menu")) {
+        if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.42f, Screen.width * 0.5f, Screen.height * .1f), "Main Menu", guiStyle_button))
+        {
             Time.timeScale = 1;
             DestroyAllObjects("zombie");
             DestroyAllObjects("wybuch");
             DestroyAllObjects("bomba");
             Application.LoadLevel("MainMenu");
         }
-        if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.55f, Screen.width * 0.5f, Screen.height * .1f), "Quit Game")) {
+        if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.55f, Screen.width * 0.5f, Screen.height * .1f), "Quit Game", guiStyle_button))
+        {
             Application.Quit();
         }
 
