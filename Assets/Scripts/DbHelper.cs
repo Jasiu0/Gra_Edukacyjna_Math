@@ -12,18 +12,53 @@ public class DbHelper {
 
     public DbHelper() {
         //Uncomment following 2 lines when debugging on PC
-        this.questionDbUri = "URI=file:" + Application.dataPath + "/Database/QuestionDb.sqlite";
-        this.scoreDbUri = "URI=file:" + Application.dataPath + "/Database/ScoreDb.sqlite";
+        //this.questionDbUri = "URI=file:" + Application.dataPath + "/QuestionDb.sqlite";
+        //this.scoreDbUri = "URI=file:" + Application.dataPath + "/ScoreDb.sqlite";
 
 
         //Uncomment following 2 lines when debugging on Android Device
-        //this.questionDbUri = "URI=file:" + Application.persistentDataPath + "/QuestionDb.sqlite";
-        //this.scoreDbUri = "URI=file:" + Application.persistentDataPath + "/ScoreDb.sqlite";
+        this.questionDbUri = "URI=file:" + Application.persistentDataPath + "/QuestionDb.sqlite";
+        this.scoreDbUri = "URI=file:" + Application.persistentDataPath + "/ScoreDb.sqlite";
         
         //Uncomment when building first time on Android device
         //CreateQuestionDatabase();  
         //CreateScoreDatabase();
-    }     
+    }   
+    
+    public void Init() {
+        using (IDbConnection dbConnection = new SqliteConnection(questionDbUri)) {
+            dbConnection.Open();
+
+            using (IDbCommand dbCommand = dbConnection.CreateCommand()) {
+                try {
+                    string sqlQuery = "SELECT * FROM Data WHERE id = 0";
+                    dbCommand.CommandText = sqlQuery;
+                    dbCommand.ExecuteReader();
+                } catch (SqliteException e) {
+                    Debug.Log(e.ToString());
+                    CreateQuestionDatabase();
+                }
+
+            }
+        }
+
+        using (IDbConnection dbConnection = new SqliteConnection(scoreDbUri)) {
+            dbConnection.Open();
+
+            using (IDbCommand dbCommand = dbConnection.CreateCommand()) {
+                try {
+                    string sqlQuery = "SELECT * FROM Data WHERE id = 0";
+                    dbCommand.CommandText = sqlQuery;
+                    dbCommand.ExecuteReader();
+                } catch (SqliteException e) {
+                    Debug.Log(e.ToString());
+                    CreateScoreDatabase();
+                }
+
+            }
+        }
+    }
+
 
     public void CreateQuestionDatabase() {
         using (IDbConnection dbConnection = new SqliteConnection(questionDbUri)) {
@@ -51,7 +86,7 @@ public class DbHelper {
             dbConnection.Open();
 
             using (IDbCommand dbCommand = dbConnection.CreateCommand()) {
-                string sqlQuery = "CREATE TABLE 'Data' (" +
+                string sqlQuery = "CREATE TABLE if not exists'Data' (" +
 	                              "'id' INTEGER PRIMARY KEY AUTOINCREMENT," +
 	                              "'name'  TEXT NOT NULL," +
 	                              "'score' INTEGER NOT NULL); ";
@@ -193,7 +228,7 @@ public class DbHelper {
     }
 
     private void CreateQuestionDataTable(IDbCommand dbCommand) {
-        string sqlQuery = "CREATE TABLE 'Data' (" +
+        string sqlQuery = "CREATE TABLE if not exists 'Data' (" +
                           "'id'	INTEGER PRIMARY KEY AUTOINCREMENT," +
 	                      "'lvl'	INTEGER NOT NULL," +
 	                      "'question'	TEXT NOT NULL," +

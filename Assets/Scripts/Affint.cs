@@ -86,7 +86,7 @@ public class Affint : MonoBehaviour {
     }
 
     private static void decreaseZombieSpeedFactor() {
-        if (ZombieSpeedFactor > 0.2f) {
+        if (ZombieSpeedFactor > 0.3f) {
             ZombieSpeedFactor -= 0.2f;
         }
     }

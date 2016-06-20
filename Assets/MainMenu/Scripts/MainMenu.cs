@@ -146,7 +146,12 @@ public class MainMenu : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        Debug.Log("Creating db if needed...");
+        DbHelper dbHelper = new DbHelper();
+        //dbHelper.CreateQuestionDatabase();
+        //dbHelper.CreateScoreDatabase();
+        dbHelper.Init();
+        Debug.Log("Done!");
     }
 
     // Update is called once per frame
