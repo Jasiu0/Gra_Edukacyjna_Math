@@ -53,6 +53,7 @@ public class Oncollision : MonoBehaviour {
         Debug.Log("KOLIZJA!");
         if (coll.gameObject.tag == "zombie")
         {
+            CsvLogger.LogEvent("Zombie killed");
             Destroy(coll.gameObject);
           //  PlayerHealth.Health += 1;
             score += MainMenu.lv;
@@ -60,6 +61,12 @@ public class Oncollision : MonoBehaviour {
             zombieKilled++;
             if (zombieKilled > 5) {
                 gameInProgress = ++MainMenu.lv < 9;
+                if (gameInProgress) {
+                    CsvLogger.LogEvent("Level " + MainMenu.lv + " started");
+                } else {
+                    CsvLogger.LogEvent("Game completed with score = " + score);
+                }
+                
                 questionView.SendMessage("OnNewLevel", null);
                 zombieKilled = 0;
                 show = true;
@@ -112,7 +119,6 @@ public class Oncollision : MonoBehaviour {
 
             return;
         }
-
 
         Affint.Stop();
 

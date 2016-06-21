@@ -45,16 +45,19 @@ public class QuestionView : MonoBehaviour {
 
             if (GUI.Button(answer1Rect, currentQuestion.Answer1, guiStyle))
             {
+                CsvLogger.LogEvent("Answer 1 chosen");
                 verifyAnswer(currentQuestion.Answer1);
             }
 
             if (GUI.Button(answer2Rect, currentQuestion.Answer2, guiStyle))
             {
+                CsvLogger.LogEvent("Answer 2 chosen");
                 verifyAnswer(currentQuestion.Answer2);
             }
 
             if (GUI.Button(answer3Rect, currentQuestion.Answer3, guiStyle))
             {
+                CsvLogger.LogEvent("Answer 3 chosen");
                 verifyAnswer(currentQuestion.Answer3);
             }
         }
@@ -81,6 +84,7 @@ public class QuestionView : MonoBehaviour {
              //Debug.Log("Wrong Answer!");
          }*/
         bool doExplode = manager.IsCorrect(chosenAnswer);
+        CsvLogger.LogEvent(doExplode ? "Good answer" : "Wrong answer");
         background.SendMessage("QuestionAnswered");
         background.SendMessage("Explode", doExplode);
 
