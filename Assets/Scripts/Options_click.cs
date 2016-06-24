@@ -1,0 +1,108 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class Options_click : MonoBehaviour {
+    public static int Option = 0;
+    public Texture bacgroundTexture;
+    GameObject[] gameObjects;
+    int temp = 0;
+    public Texture options_image;
+	// Use this for initialization
+
+    void DestroyAllObjects(string tag)
+    {
+        gameObjects = GameObject.FindGameObjectsWithTag(tag);
+        /*  if (tag == "zombie")
+          {
+              PlayerHealth.Health += 5 + gameObjects.Length - temp;
+          }*/
+        for (var i = 0; i < gameObjects.Length; i++)
+        {
+            Destroy(gameObjects[i]);
+        }
+
+    }
+
+    private GUIStyle guiStyle_button;
+    private GUIStyle guiStyle = new GUIStyle();
+    void OnGUI()
+    {
+
+        guiStyle_button = new GUIStyle(GUI.skin.button);
+        guiStyle_button.normal.textColor = Color.white;
+        guiStyle_button.fontSize = 30;
+        guiStyle_button.alignment = TextAnchor.MiddleCenter;
+        if (Option == 0)
+        {
+            if (GUI.Button(new Rect(Screen.width * 0.92f, Screen.height * 0.78f, Screen.width * 0.08f, Screen.height * .11f), options_image))
+            {
+                Option = 1;
+                Time.timeScale = 0.0f;
+            }
+        
+        }
+        if (Option == 1)
+        {
+            Affint.Pause();
+
+            guiStyle.fontSize = 50;
+            guiStyle.normal.textColor = Color.white;
+            guiStyle.fontStyle = FontStyle.Italic;
+            GUI.depth = 0;
+            GUI.Label(new Rect(Screen.width * 0.37f, Screen.height * 0.08f, Screen.width * 0.5f, 50), "Options", guiStyle);
+            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), bacgroundTexture);
+            if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.28f, Screen.width * 0.5f, Screen.height * .1f), "Resume", guiStyle_button))
+            {
+                Time.timeScale = 1;
+                Option = 0;
+
+                Affint.Start();
+            }
+            if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.42f, Screen.width * 0.5f, Screen.height * .1f), "Restart", guiStyle_button))
+            {
+                temp = PlayerHealth.Health;
+                PlayerHealth.Health = 5;
+                Time.timeScale = 1;
+                DestroyAllObjects("zombie");
+                DestroyAllObjects("wybuch");
+                DestroyAllObjects("bomba");
+                Option = 0;
+
+                Affint.Stop();
+                Affint.Start();
+            }
+
+            if (MainMenu.music == true)
+                if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.55f, Screen.width * 0.5f, Screen.height * .1f), "Music: On", guiStyle_button))
+                {
+                    MainMenu.music = false;
+                    AudioListener.volume = 0;
+                }
+            if (MainMenu.music == false)
+                if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.55f, Screen.width * 0.5f, Screen.height * .1f), "Music: Off", guiStyle_button))
+                {
+                    MainMenu.music = true;
+                    AudioListener.volume = 1;
+                }
+
+
+            if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.68f, Screen.width * 0.5f, Screen.height * .1f), "Main Menu", guiStyle_button))
+            {
+                Time.timeScale = 1;
+                DestroyAllObjects("zombie");
+                DestroyAllObjects("wybuch");
+                DestroyAllObjects("bomba");
+                Option = 0;
+                Application.LoadLevel("MainMenu");
+
+                Affint.Stop();
+            }
+            if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.81f, Screen.width * 0.5f, Screen.height * .1f), "Quit Game", guiStyle_button))
+            {
+                Affint.Stop();
+                Application.Quit();
+            }
+
+        }
+    }
+}

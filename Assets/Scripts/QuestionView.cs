@@ -39,7 +39,7 @@ public class QuestionView : MonoBehaviour {
         guiStyle.fontSize = 30;  //must be int, obviously...
         guiStyle.alignment = TextAnchor.MiddleCenter;
 
-        if (Options.Option == 0)
+        if (Options_click.Option == 0)
         {
             GUI.Box(questionRect, currentQuestion.Question, guiStyle);
 

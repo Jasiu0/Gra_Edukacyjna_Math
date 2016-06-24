@@ -6,7 +6,7 @@ public class Oncollision : MonoBehaviour {
     public static int score = 0;
     public static int zombieKilled = 0;
 
-    private bool gameInProgress = true;
+    public static  bool gameInProgress = true;
 
     private GameObject[] gameObjects;
     private GameObject questionView;
@@ -16,6 +16,7 @@ public class Oncollision : MonoBehaviour {
     private bool showText = false;
     private float currentTime = 0.0f, executedTime = 0.0f, timeToWait = 5.0f;
     private bool show = false;
+    public Texture bacgroundTexture;
     void Start () {
         questionView = GameObject.FindWithTag("questionView");
     }
@@ -121,11 +122,12 @@ public class Oncollision : MonoBehaviour {
         }
 
         Affint.Stop();
-
+        GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), bacgroundTexture);
         GUI.Label(new Rect(Screen.width * 0.25f, Screen.height * 0.08f, Screen.width * 0.5f, 50), "Game Completed!", guiStyle);
 
         if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.28f, Screen.width * 0.5f, Screen.height * .1f), "Restart", guiStyle_button))
         {
+            gameInProgress = true;
             Time.timeScale = 1;
             DestroyAllObjects("zombie");
             DestroyAllObjects("wybuch");
