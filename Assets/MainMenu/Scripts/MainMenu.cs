@@ -136,6 +136,7 @@ public class MainMenu : MonoBehaviour
         }
     }
     private void startGame(int gameLevel) {
+        CsvLogger.LogEvent("Game started at level " + gameLevel);
         PlayerHealth.Health = 5;
         pmenu = 0;
         lv = gameLevel;
@@ -146,7 +147,8 @@ public class MainMenu : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        DbHelper dbHelper = new DbHelper();
+        dbHelper.Init();
     }
 
     // Update is called once per frame

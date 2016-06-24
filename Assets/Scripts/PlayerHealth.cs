@@ -17,6 +17,8 @@ public class PlayerHealth : MonoBehaviour {
         {
             Time.timeScale = 0.0f;
             if (!recordSaved) {
+                CsvLogger.LogEvent("Game over with score: " + Oncollision.score);
+
                 DbHelper dbHelper = new DbHelper();
                 dbHelper.AddScoreRecord(MainMenu.username, Oncollision.score);
                 Oncollision.score = 0;

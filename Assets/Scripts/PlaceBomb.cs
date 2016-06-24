@@ -23,6 +23,7 @@ public class PlaceBomb : MonoBehaviour {
         this.gameObject.AddComponent<AudioSource>();
         this.GetComponent<AudioSource>().clip = placesound;
         this.GetComponent<AudioSource>().Play();
+        CsvLogger.LogEvent("Bomb placed");
         if (!bombPlaced) {
             bombPlaced = true;
             Ray ray = Camera.main.ScreenPointToRay(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
@@ -41,6 +42,7 @@ public class PlaceBomb : MonoBehaviour {
     }
 
     public void Explode(bool doExplode) {
+        CsvLogger.LogEvent("Bomb exploded");
         float x = GameObject.FindWithTag("bomba").transform.position.x;
         float y = GameObject.FindWithTag("bomba").transform.position.y;
         Destroy(GameObject.FindWithTag("bomba"));

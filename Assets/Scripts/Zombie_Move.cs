@@ -23,6 +23,7 @@ public class Zombie_Move : MonoBehaviour
         if (GetComponent<Rigidbody2D>().position.x < -7.6f)
         {
             Debug.Log("Nope");
+            CsvLogger.LogEvent("Zombie went under the bed");
             PlayerHealth.Health -= 1;
             Destroy(gameObject);
         }

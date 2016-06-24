@@ -17,14 +17,16 @@ public class Affint : MonoBehaviour {
 
     private static int questionsAnsweredInInterval = 0;
 
-    private static Timer timer = new Timer();
+    private static Timer timer;
 
 
     public static void Start() {
+        timer = new Timer();
         timer.Interval = INTERVAL * 1000;
         timer.Elapsed += new ElapsedEventHandler(TimerElapsed);
         zombieKilled = Oncollision.zombieKilled;
         timer.Start();
+        Debug.Log("Timer started");
     }
 
     public static void Pause() {
@@ -32,7 +34,13 @@ public class Affint : MonoBehaviour {
     }
 
     public static void Stop() {
-        timer.Stop();
+        if (timer != null) {
+            timer.Stop();
+            timer.Dispose();
+            timer.Close();
+            timer = null;
+        }
+           
         ZombieSpeedFactor = 1.0f;
         questionsAnsweredInInterval = 0;
         zombieEnteredInInterval = 0;
@@ -72,6 +80,7 @@ public class Affint : MonoBehaviour {
             increaseZombieSpeedFactor();
         }
 
+        CsvLogger.LogEvent("Zombie speed factor: " + ZombieSpeedFactor);
         Debug.Log("Zombie speed factor = " + ZombieSpeedFactor);
 
         zombieKilled = Oncollision.zombieKilled;
@@ -86,7 +95,7 @@ public class Affint : MonoBehaviour {
     }
 
     private static void decreaseZombieSpeedFactor() {
-        if (ZombieSpeedFactor > 0.2f) {
+        if (ZombieSpeedFactor > 0.3f) {
             ZombieSpeedFactor -= 0.2f;
         }
     }
