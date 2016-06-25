@@ -60,7 +60,7 @@ public class Oncollision : MonoBehaviour {
             score += MainMenu.lv;
 
             zombieKilled++;
-            if (zombieKilled > 5) {
+            if (zombieKilled > 14) {
                 gameInProgress = ++MainMenu.lv < 9;
                 if (gameInProgress) {
                     CsvLogger.LogEvent("Level " + MainMenu.lv + " started");
