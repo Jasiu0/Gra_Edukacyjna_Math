@@ -132,6 +132,8 @@ public class Oncollision : MonoBehaviour {
             DestroyAllObjects("zombie");
             DestroyAllObjects("wybuch");
             DestroyAllObjects("bomba");
+            MainMenu.lv = 1;
+            Affint.Start();
         }
         if (GUI.Button(new Rect(Screen.width * 0.25f, Screen.height * 0.42f, Screen.width * 0.5f, Screen.height * .1f), "Main Menu", guiStyle_button))
         {

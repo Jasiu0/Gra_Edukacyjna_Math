@@ -9,9 +9,9 @@ using UnityEngine;
 
 class CsvLogger {
     //PC filename
-    //const string FILENAME = "event_log.csv";
+    const string FILENAME = "event_log.csv";
     //Android filename
-    static string FILENAME = Application.persistentDataPath + "/event_log.csv";
+    //static string FILENAME = Application.persistentDataPath + "/event_log.csv";
 
     public static void LogEvent(string eventMsg) {
         string time = DateTime.Now.ToString("HH:mm:ss");

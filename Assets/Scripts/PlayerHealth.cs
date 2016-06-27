@@ -61,9 +61,11 @@ public class PlayerHealth : MonoBehaviour
         guiStyle.fontSize = 20;
         guiStyle.normal.textColor = Color.white;
         GUI.depth = 0;
-        if (Options_click.Option == 0 && Oncollision.gameInProgress == true) 
+        if (Options_click.Option == 0 && Oncollision.gameInProgress == true)
         {
-            GUI.Label(new Rect(Screen.width * 0.88f, Screen.height * 0.778f, 100, 20), Health.ToString(), guiStyle);
+            guiStyle.fontSize = 40;
+            GUI.Label(new Rect(Screen.width * 0.878f, Screen.height * 0.811f, 100, 20), Health.ToString(), guiStyle);
+            guiStyle.fontSize = 20;
             if (Health == 0)
             {
                 Affint.Stop();
